@@ -1,0 +1,24 @@
+services:
+  db:
+    image: mongo
+    restart: always
+    hostname: 'undidb'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mgdbkoral2023*
+      DATABASE_URI: "mongodb://root:mgdbkoral2023*@localhost:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
+    volumes:
+      - mongodata:/data/db
+      - ../ma-coreapi/database/:/ma-coreapi_seed_scripts/
+      - ../ma-calculations/database/:/ma-calculations_seed_scripts/
+    ports:
+      - "27017:27017"
+    networks:
+      - mora-database-network
+
+volumes:
+  mongodata:
+networks:
+  mora-database-network:
+    driver: bridge
+

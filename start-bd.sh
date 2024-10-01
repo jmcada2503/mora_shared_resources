@@ -1,0 +1,1 @@
+docker-compose -f ci/docker-compose.yaml up -d akoya_db
