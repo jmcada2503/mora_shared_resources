@@ -1,0 +1,11 @@
+FROM localstack/localstack:latest
+
+# Crea el directorio necesario
+RUN mkdir -p /etc/localstack/init/ready.d
+
+# Copia el script en el contenedor (asegúrate de que la ruta de origen sea correcta)
+COPY ./create_resources.sh /etc/localstack/init/ready.d/script.sh
+
+# Asegura que el script sea ejecutable
+RUN chmod +x /etc/localstack/init/ready.d/script.sh
+
