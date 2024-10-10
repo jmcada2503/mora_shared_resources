@@ -19,5 +19,7 @@ create_s3_bucket() {
 # Ejecutar las funciones
 create_s3_bucket
 #create_sqs_queue
+awslocal sqs create-queue --queue-name coreapi-queue
+awslocal sqs create-queue --queue-name coreapi-load-queue
 
 echo "Todos los recursos han sido creados."
