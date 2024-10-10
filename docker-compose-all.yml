@@ -33,8 +33,6 @@ services:
 
   reverse-proxy:
     image: nginx:latest
-    ports:
-      - "8000:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     network_mode: "host"
@@ -130,41 +128,41 @@ services:
     expose:
       - 3009
 
-  # wr-extraccion:
-  #   image: wr-extraccion:latest
-  #   restart: no
-  #   build:
-  #       context: ../wr-extraccion/
-  #       dockerfile: ./ci/Dockerfile
-  #   hostname: 'wr-extraccion'
-  #   ports:
-  #       - 3010:3000
-  #   environment:
-  #     DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
-  #     UNDI_CONFIG_PATH: "app/data/config.yaml"
-  #     PORT: 3000  # La aplicación escucha en el puerto 3000 dentro del contenedor
-  #   networks:
-  #     - mora-database-network
-  #   expose:
-  #     - 3000
+  wr-extraccion:
+    image: wr-extraccion:latest
+    restart: no
+    build:
+        context: ../wr-extraccion/
+        dockerfile: ./ci/Dockerfile
+    hostname: 'wr-extraccion'
+    ports:
+        - 3010:3000
+    environment:
+      DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
+      UNDI_CONFIG_PATH: "app/data/config.yaml"
+      PORT: 3000  # La aplicación escucha en el puerto 3000 dentro del contenedor
+    networks:
+      - mora-database-network
+    expose:
+      - 3000
 
-  # wr-cargaadmitidos:
-  #   image: wr-cargaadmitidos:latest
-  #   restart: no
-  #   build:
-  #       context: ../wr-cargaadmitidos/
-  #       dockerfile: ./ci/Dockerfile
-  #   hostname: 'wr-cargaadmitidos'
-  #   ports:
-  #       - 3011:3011
-  #   environment:
-  #     DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
-  #     UNDI_CONFIG_PATH: "app/data/config.yaml"
-  #     PORT: 3011
-  #   networks:
-  #     - mora-database-network
-  #   expose:
-  #     - 3011
+  wr-cargaadmitidos:
+    image: wr-cargaadmitidos:latest
+    restart: no
+    build:
+        context: ../wr-cargaadmitidos/
+        dockerfile: ./ci/Dockerfile
+    hostname: 'wr-cargaadmitidos'
+    ports:
+        - 3011:3011
+    environment:
+      DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
+      UNDI_CONFIG_PATH: "app/data/config.yaml"
+      PORT: 3011
+    networks:
+      - mora-database-network
+    expose:
+      - 3011
 
 
 
