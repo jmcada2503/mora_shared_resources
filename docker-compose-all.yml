@@ -2,8 +2,8 @@ services:
   localstack:
     build:
       context: .
-      dockerfile: ./Dockerfile.localstack
-    container_name: my_localstack_container
+      dockerfile: Dockerfile.localstack
+    container_name: "localstack"
     ports:
       - "4566:4566"
     environment:
@@ -117,7 +117,7 @@ services:
       dockerfile: ./ci/Dockerfile
     hostname: 'ma-calculations'
     ports:
-      - 3009:3009
+      - 3009:3000
     env_file: "../ma-calculations/.env"
     networks:
       - mora-database-network

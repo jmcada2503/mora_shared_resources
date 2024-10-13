@@ -1,11 +1,14 @@
 FROM localstack/localstack:latest
 
+RUN apt update && apt install -y dos2unix awscli
+
 # Crea el directorio necesario
 RUN mkdir -p /etc/localstack/init/ready.d
 
-# Copia el script en el contenedor (asegúrate de que la ruta de origen sea correcta)
+# Copia el script en el contenedor
 COPY ./create_resources.sh /etc/localstack/init/ready.d/script.sh
+
+RUN dos2unix /etc/localstack/init/ready.d/script.sh
 
 # Asegura que el script sea ejecutable
 RUN chmod +x /etc/localstack/init/ready.d/script.sh
-
