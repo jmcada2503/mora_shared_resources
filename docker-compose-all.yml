@@ -26,6 +26,10 @@ services:
       - mongodata:/data/db
       - ../ma-coreapi/database/:/ma-coreapi_seed_scripts/
       - ../ma-calculations/database/:/ma-calculations_seed_scripts/
+      - ../ma-gestiondocumentos/database/:/ma-gestiondocumentos_seed_scripts/
+      - ../ma-registroacademico/database/:/ma-registroacademico_seed_scripts/
+      - ../ma-seguridad/database/:/ma-seguridad_seed_scripts/
+      - ../wr-extraccion/database/:/wr-extraccion_seed_scripts/
     ports:
       - "27017:27017"
     networks:
