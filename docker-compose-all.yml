@@ -70,7 +70,7 @@ services:
       - db
       - reverse-proxy
       - ldap
-    restart: no
+    restart: always
     build:
       context: ../ma-seguridad/
       dockerfile: ./ci/Dockerfile
@@ -115,7 +115,8 @@ services:
       - localstack
       - reverse-proxy
     image: ma-calculations:latest
-    restart: no
+    restart: always
+
     build:
       context: ../ma-calculations/
       dockerfile: ./ci/Dockerfile
@@ -128,9 +129,57 @@ services:
     environment:
       DATABASE_URI: mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true
       UNDI_CONFIG_PATH: "app/data/config.yaml"
-      PORT: 3009
+      PORT: 3000
     expose:
-      - 3009
+      - 3000
+
+  ma-gestiondocumentos:
+    depends_on:
+      - db
+      - localstack
+      - reverse-proxy
+    image: ma-gestiondocumentos:latest
+    restart: always
+
+    build:
+      context: ../ma-gestiondocumentos/
+      dockerfile: ./ci/Dockerfile
+    hostname: 'ma-gestiondocumentos'
+    ports:
+      - 4000:3000
+    env_file: "../ma-gestiondocumentos/.env"
+    networks:
+      - mora-database-network
+    environment:
+      DATABASE_URI: mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true
+      UNDI_CONFIG_PATH: "app/data/config.yaml"
+      PORT: 3000
+    expose:
+      - 3000
+
+  ma-registroacademico:
+    depends_on:
+      - db
+      - localstack
+      - reverse-proxy
+    image: ma-registroacademico:latest
+    restart: always
+
+    build:
+      context: ../ma-registroacademico/
+      dockerfile: ./ci/Dockerfile
+    hostname: 'ma-registroacademico'
+    ports:
+      - 3002:3000
+    env_file: "../ma-registroacademico/.env"
+    networks:
+      - mora-database-network
+    environment:
+      DATABASE_URI: mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true
+      UNDI_CONFIG_PATH: "app/data/config.yaml"
+      PORT: 3000
+    expose:
+      - 3000
 
   wr-extraccion:
     image: wr-extraccion:latest
