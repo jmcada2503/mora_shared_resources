@@ -3,16 +3,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.localstack
+    container_name: "localstack"
     ports:
       - "4566:4566"
     environment:
       - SERVICES=s3,sqs
     volumes:
       - localstack_data:/data/localstack  # Volumen nombrado dentro del contenedor
-      - /create_resources:/create_resources
+      - /create_resources.sh:/create_resources.sh
     networks:
       - mora-database-network
-
+      
   db:
     image: mongo
     restart: always
