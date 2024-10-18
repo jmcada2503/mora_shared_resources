@@ -40,4 +40,17 @@ create_sqs_queue "calculations-queue"
 create_sqs_queue "coreapi-queue"
 create_sqs_queue "coreapi-load-queue"
 
+
+awslocal s3api put-bucket-cors --bucket undi-documents --cors-configuration '{
+  "CORSRules": [
+    {
+      "AllowedOrigins": ["*"], 
+      "AllowedMethods": ["GET", "POST", "PUT", "DELETE"], 
+      "AllowedHeaders": ["*"],
+      "ExposeHeaders": [],
+      "MaxAgeSeconds": 3000
+    }
+  ]
+}'
+
 echo "Todos los recursos han sido creados."
