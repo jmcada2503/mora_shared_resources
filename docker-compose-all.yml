@@ -1,12 +1,13 @@
 services:
-  shared-localstack:
+  localstack:
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile.localstack
     ports:
       - "4566:4566"
     environment:
-      - AWS_DEFAULT_REGION=ap-southeast-1
+      - AWS_DEFAULT_REGION=us-east-1
       - EDGE_PORT=4566
       - SERVICES=s3,sqs
     volumes:
@@ -57,7 +58,7 @@ services:
     image: ma-coreapi:latest
     depends_on:
       - db
-      - shared-localstack
+      - localstack
       - reverse-proxy
     restart: no
     build:
@@ -124,7 +125,7 @@ services:
   ma-calculations:
     depends_on:
       - db
-      - shared-localstack
+      - localstack
       - reverse-proxy
     image: ma-calculations:latest
     restart: on-failure
@@ -147,7 +148,7 @@ services:
   ma-gestiondocumentos:
     depends_on:
       - db
-      - shared-localstack
+      - localstack
       - reverse-proxy
     image: ma-gestiondocumentos:latest
     restart: always
@@ -171,7 +172,7 @@ services:
   ma-registroacademico:
     depends_on:
       - db
-      - shared-localstack
+      - localstack
       - reverse-proxy
     image: ma-registroacademico:latest
     restart: no
