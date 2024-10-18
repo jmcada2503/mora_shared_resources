@@ -37,6 +37,17 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     network_mode: "host"
 
+  web-sockets:
+    image: web-sockets-server:latest
+    build: ../mora-web-sockets/
+    restart: no
+    hostname: 'web-sockets'
+    ports: 
+        - 6001:6001
+    expose:
+      - 6001
+    command: npm run start
+
 
 volumes:
   mongodata:
