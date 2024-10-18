@@ -136,7 +136,7 @@ services:
   ma-gestiondocumentos:
     depends_on:
       - db
-      - localstack
+      - shared-localstack
       - reverse-proxy
     image: ma-gestiondocumentos:latest
     restart: always
@@ -160,11 +160,10 @@ services:
   ma-registroacademico:
     depends_on:
       - db
-      - localstack
+      - shared-localstack
       - reverse-proxy
     image: ma-registroacademico:latest
-    restart: always
-
+    restart: no
     build:
       context: ../ma-registroacademico/
       dockerfile: ./ci/Dockerfile
@@ -179,26 +178,7 @@ services:
       UNDI_CONFIG_PATH: "app/data/config.yaml"
       PORT: 3000
     expose:
-      - 3000
-
-  ma-registroacademico:
-    image: ma-registroacademico:latest
-    restart: no
-    build:
-        context: ../
-        dockerfile: ./ci/Dockerfile
-    hostname: 'ma-registroacademico'
-    ports:
-        - 3002:3000
-    env_file: "../ma-registroacademico/.env"
-    environment:
-      DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
-      UNDI_CONFIG_PATH: "app/data/config.yaml"
-    networks:
-      - mora-database-network
-    expose:
       - 3002
-
 
   wr-extraccion:
     image: wr-extraccion:latest
