@@ -1,12 +1,13 @@
 services:
-  localstack:
+  shared-localstack:
     build:
       context: .
       dockerfile: Dockerfile.localstack
-    container_name: "localstack"
     ports:
       - "4566:4566"
     environment:
+      - AWS_DEFAULT_REGION=ap-southeast-1
+      - EDGE_PORT=4566
       - SERVICES=s3,sqs
     volumes:
       - localstack_data:/data/localstack  # Volumen nombrado dentro del contenedor
@@ -45,7 +46,7 @@ services:
     image: ma-coreapi:latest
     depends_on:
       - db
-      - localstack
+      - shared-localstack
       - reverse-proxy
     restart: no
     build:
@@ -112,10 +113,10 @@ services:
   ma-calculations:
     depends_on:
       - db
-      - localstack
+      - shared-localstack
       - reverse-proxy
     image: ma-calculations:latest
-    restart: no
+    restart: on-failure
     build:
       context: ../ma-calculations/
       dockerfile: ./ci/Dockerfile
@@ -131,6 +132,25 @@ services:
       PORT: 3009
     expose:
       - 3009
+
+  ma-registroacademico:
+    image: ma-registroacademico:latest
+    restart: no
+    build:
+        context: ../
+        dockerfile: ./ci/Dockerfile
+    hostname: 'ma-registroacademico'
+    ports:
+        - 3002:3000
+    env_file: "../ma-registroacademico/.env"
+    environment:
+      DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
+      UNDI_CONFIG_PATH: "app/data/config.yaml"
+    networks:
+      - mora-database-network
+    expose:
+      - 3002
+
 
   wr-extraccion:
     image: wr-extraccion:latest
@@ -168,6 +188,27 @@ services:
     expose:
       - 3011
 
+  backoffice:
+    build:
+      context: ../registroacademico-ui
+      dockerfile: ./ci/Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../registroacademico-ui:/app
+    command: >
+      sh -c "pnpm dev:bo"
+
+  portal-admitidos:
+    build:
+      context: ../registroacademico-ui
+      dockerfile: ./ci/Dockerfile
+    ports:
+      - "5174:5173"
+    volumes:
+      - ../registroacademico-ui:/app
+    command: >
+      sh -c "pnpm dev:pa"
 
 
 
