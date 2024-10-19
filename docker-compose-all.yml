@@ -39,9 +39,15 @@ services:
 
   reverse-proxy:
     image: nginx:latest
+    container_name: reverse-proxy
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    network_mode: "host"
+            - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+            - "8080:443"
+            - "8090:80"
+            - "8000:8000"
+    networks:
+      - mora-database-network
 
   web-sockets:
     image: web-sockets-server:latest
@@ -52,6 +58,8 @@ services:
         - 6001:6001
     expose:
       - 6001
+    networks:
+      - mora-database-network
     command: npm run start
 
   ma-coreapi:
@@ -94,7 +102,7 @@ services:
       DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin"
       UNDI_CONFIG_PATH: "app/data/config.yaml"
       PORT: 3000
-      LDAP_BASE_DN: "cn={1},ou=users,dc=koralat,dc=co"
+      LDAP_BASE_DN: "uid={1},ou=People,o=unal.edu.co"
       LDAP_SEARCH_DN: "ou=users,dc=koralat,dc=co"
       LDAP_URL: "ldap://ldap:389"
       LDAP_USER: "cn=admin,dc=koralat,dc=co"
@@ -228,27 +236,27 @@ services:
     expose:
       - 3011
 
-  backoffice:
-    build:
-      context: ../registroacademico-ui
-      dockerfile: ./ci/Dockerfile
-    ports:
-      - "5173:5173"
-    volumes:
-      - ../registroacademico-ui:/app
-    command: >
-      sh -c "pnpm dev:bo"
+  # backoffice:
+  #   build:
+  #     context: ../registroacademico-ui
+  #     dockerfile: ./ci/Dockerfile
+  #   ports:
+  #     - "5173:5173"
+  #   volumes:
+  #     - ../registroacademico-ui:/app
+  #   command: >
+  #     sh -c "pnpm dev:bo"
 
-  portal-admitidos:
-    build:
-      context: ../registroacademico-ui
-      dockerfile: ./ci/Dockerfile
-    ports:
-      - "5174:5173"
-    volumes:
-      - ../registroacademico-ui:/app
-    command: >
-      sh -c "pnpm dev:pa"
+  # portal-admitidos:
+  #   build:
+  #     context: ../registroacademico-ui
+  #     dockerfile: ./ci/Dockerfile
+  #   ports:
+  #     - "5174:5173"
+  #   volumes:
+  #     - ../registroacademico-ui:/app
+  #   command: >
+  #     sh -c "pnpm dev:pa"
 
 
 
