@@ -90,7 +90,7 @@ services:
     depends_on:
       - db
       - reverse-proxy
-      - ldap
+      - openldap
     restart: always
     build:
       context: ../ma-seguridad/
@@ -235,16 +235,16 @@ services:
     expose:
       - 3011
 
-  # backoffice:
-  #   build:
-  #     context: ../registroacademico-ui
-  #     dockerfile: ./ci/Dockerfile
-  #   ports:
-  #     - "5173:5173"
-  #   volumes:
-  #     - ../registroacademico-ui:/app
-  #   command: >
-  #     sh -c "pnpm dev:bo"
+  backoffice:
+    build:
+      context: ../registroacademico-ui
+      dockerfile: ./ci/Dockerfile.windows
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../registroacademico-ui:/app
+    command: >
+      sh -c "pnpm dev:bo"
 
   # portal-admitidos:
   #   build:
