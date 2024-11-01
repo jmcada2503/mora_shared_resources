@@ -221,6 +221,7 @@ services:
     hostname: 'wr-cargaadmitidos'
     ports:
         - 3011:3011
+    env_file: "../wr-cargaadmitidos/.env"
     environment:
       DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
       UNDI_CONFIG_PATH: "app/data/config.yaml"
