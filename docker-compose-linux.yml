@@ -242,16 +242,16 @@ services:
     command: >
       sh -c "pnpm dev:bo"
 
-  # portal-admitidos:
-  #   build:
-  #     context: ../registroacademico-ui
-  #     dockerfile: ./ci/Dockerfile
-  #   ports:
-  #     - "5174:5173"
-  #   volumes:
-  #     - ../registroacademico-ui:/app
-  #   command: >
-  #     sh -c "pnpm dev:pa"
+  portal-admitidos:
+    build:
+      context: ../registroacademico-ui
+      dockerfile: ./ci/Dockerfile
+    ports:
+      - "5174:5173"
+    volumes:
+      - ../registroacademico-ui:/app
+    command: >
+      sh -c "pnpm dev:pa"
 
 
 
