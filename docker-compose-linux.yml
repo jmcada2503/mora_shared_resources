@@ -47,7 +47,7 @@ services:
   web-sockets:
     image: web-sockets-server:latest
     build: ../mora-web-sockets/
-    restart: no
+    restart: always
     hostname: 'web-sockets'
     ports: 
         - 6001:6001
@@ -63,7 +63,7 @@ services:
       - db
       - localstack
       - reverse-proxy
-    restart: no
+    restart: always
     build:
         context: ../ma-coreapi/
         dockerfile: ./ci/Dockerfile
@@ -111,6 +111,7 @@ services:
   openldap:
     image: osixia/openldap:1.5.0
     container_name: ldap-server
+    restart: always
     environment:
       LDAP_ORGANISATION: "Koralat Organization"
       LDAP_DOMAIN: "koralat.co"
@@ -130,7 +131,7 @@ services:
       - localstack
       - reverse-proxy
     image: ma-calculations:latest
-    restart: on-failure
+    restart: always
     build:
       context: ../ma-calculations/
       dockerfile: ./ci/Dockerfile
@@ -177,7 +178,7 @@ services:
       - localstack
       - reverse-proxy
     image: ma-registroacademico:latest
-    restart: no
+    restart: always
     build:
       context: ../ma-registroacademico/
       dockerfile: ./ci/Dockerfile
@@ -196,7 +197,7 @@ services:
 
   wr-extraccion:
     image: wr-extraccion:latest
-    restart: no
+    restart: always
     build:
         context: ../wr-extraccion/
         dockerfile: ./ci/Dockerfile
@@ -214,7 +215,7 @@ services:
 
   wr-cargaadmitidos:
     image: wr-cargaadmitidos:latest
-    restart: no
+    restart: always
     build:
         context: ../wr-cargaadmitidos/
         dockerfile: ./ci/Dockerfile
