@@ -43,6 +43,10 @@ services:
     network_mode: host
     volumes:
     - ./nginx-linux.conf:/etc/nginx/nginx.conf
+    ports:
+          - "8000:8000"
+    expose:
+          - "8000"
 
   web-sockets:
     image: web-sockets-server:latest
@@ -222,7 +226,6 @@ services:
     hostname: 'wr-cargaadmitidos'
     ports:
         - 3011:3011
-    env_file: "../wr-cargaadmitidos/.env"
     environment:
       DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
       UNDI_CONFIG_PATH: "app/data/config.yaml"
@@ -243,16 +246,16 @@ services:
     command: >
       sh -c "pnpm dev:bo"
 
-  portal-admitidos:
-    build:
-      context: ../registroacademico-ui
-      dockerfile: ./ci/Dockerfile
-    ports:
-      - "5174:5173"
-    volumes:
-      - ../registroacademico-ui:/app
-    command: >
-      sh -c "pnpm dev:pa"
+  # portal-admitidos:
+  #   build:
+  #     context: ../registroacademico-ui
+  #     dockerfile: ./ci/Dockerfile
+  #   ports:
+  #     - "5174:5173"
+  #   volumes:
+  #     - ../registroacademico-ui:/app
+  #   command: >
+  #     sh -c "pnpm dev:pa"
 
 
 

@@ -46,6 +46,8 @@ services:
             - "8080:443"
             - "8090:80"
             - "8000:8000"
+    expose:
+          - "8000"
     networks:
       - mora-database-network
 
