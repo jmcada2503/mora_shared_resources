@@ -11,15 +11,15 @@ services:
       - EDGE_PORT=4566
       - SERVICES=s3,sqs
     volumes:
-      - localstack_data:/data/localstack  # Volumen nombrado dentro del contenedor
-      - /create_resources.sh:/create_resources.sh
+      - localstack_data:/data/localstack # Volumen nombrado dentro del contenedor
+      - ./create_resources.sh:/create_resources.sh
     networks:
       - mora-database-network
 
   db:
     image: mongo
     restart: always
-    hostname: 'undidb'
+    hostname: "undidb"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: mgdbkoral2023*
@@ -42,19 +42,19 @@ services:
     container_name: reverse-proxy
     network_mode: host
     volumes:
-    - ./nginx-linux.conf:/etc/nginx/nginx.conf
+      - ./nginx-linux.conf:/etc/nginx/nginx.conf
     ports:
-          - "8000:8000"
+      - "8000:8000"
     expose:
-          - "8000"
+      - "8000"
 
   web-sockets:
     image: web-sockets-server:latest
     build: ../mora-web-sockets/
     restart: always
-    hostname: 'web-sockets'
-    ports: 
-        - 6001:6001
+    hostname: "web-sockets"
+    ports:
+      - 6001:6001
     expose:
       - 6001
     networks:
@@ -69,11 +69,11 @@ services:
       - reverse-proxy
     restart: always
     build:
-        context: ../ma-coreapi/
-        dockerfile: ./ci/Dockerfile
-    hostname: 'ma-coreapi'
+      context: ../ma-coreapi/
+      dockerfile: ./ci/Dockerfile
+    hostname: "ma-coreapi"
     ports:
-        - 3001:3001
+      - 3001:3001
     env_file: "../ma-coreapi/.env"
     environment:
       DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin"
@@ -94,9 +94,9 @@ services:
     build:
       context: ../ma-seguridad/
       dockerfile: ./ci/Dockerfile
-    hostname: 'ma-seguridad'
+    hostname: "ma-seguridad"
     ports:
-        - 3000:3000
+      - 3000:3000
     environment:
       DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin"
       UNDI_CONFIG_PATH: "app/data/config.yaml"
@@ -128,7 +128,6 @@ services:
     networks:
       - mora-database-network
 
-
   ma-calculations:
     depends_on:
       - db
@@ -139,7 +138,7 @@ services:
     build:
       context: ../ma-calculations/
       dockerfile: ./ci/Dockerfile
-    hostname: 'ma-calculations'
+    hostname: "ma-calculations"
     ports:
       - 3009:3000
     env_file: "../ma-calculations/.env"
@@ -163,7 +162,7 @@ services:
     build:
       context: ../ma-gestiondocumentos/
       dockerfile: ./ci/Dockerfile
-    hostname: 'ma-gestiondocumentos'
+    hostname: "ma-gestiondocumentos"
     ports:
       - 4000:3000
     env_file: "../ma-gestiondocumentos/.env"
@@ -186,7 +185,7 @@ services:
     build:
       context: ../ma-registroacademico/
       dockerfile: ./ci/Dockerfile
-    hostname: 'ma-registroacademico'
+    hostname: "ma-registroacademico"
     ports:
       - 3002:3000
     env_file: "../ma-registroacademico/.env"
@@ -203,15 +202,15 @@ services:
     image: wr-extraccion:latest
     restart: always
     build:
-        context: ../wr-extraccion/
-        dockerfile: ./ci/Dockerfile
-    hostname: 'wr-extraccion'
+      context: ../wr-extraccion/
+      dockerfile: ./ci/Dockerfile
+    hostname: "wr-extraccion"
     ports:
-        - 3010:3000
+      - 3010:3000
     environment:
       DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
       UNDI_CONFIG_PATH: "app/data/config.yaml"
-      PORT: 3000  # La aplicación escucha en el puerto 3000 dentro del contenedor
+      PORT: 3000 # La aplicación escucha en el puerto 3000 dentro del contenedor
     networks:
       - mora-database-network
     expose:
@@ -221,11 +220,11 @@ services:
     image: wr-cargaadmitidos:latest
     restart: always
     build:
-        context: ../wr-cargaadmitidos/
-        dockerfile: ./ci/Dockerfile
-    hostname: 'wr-cargaadmitidos'
+      context: ../wr-cargaadmitidos/
+      dockerfile: ./ci/Dockerfile
+    hostname: "wr-cargaadmitidos"
     ports:
-        - 3011:3011
+      - 3011:3011
     environment:
       DATABASE_URI: "mongodb://root:mgdbkoral2023*@db:27017/undidb?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
       UNDI_CONFIG_PATH: "app/data/config.yaml"
@@ -257,11 +256,9 @@ services:
   #   command: >
   #     sh -c "pnpm dev:pa"
 
-
-
 volumes:
   mongodata:
-  localstack_data:  # Volumen nombrado para los datos de LocalStack
+  localstack_data: # Volumen nombrado para los datos de LocalStack
 
 networks:
   mora-database-network:
